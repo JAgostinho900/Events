@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProEvents.API.Data;
 using ProEvents.API.Models;
 
 namespace ProEvents.API.Controllers
@@ -11,50 +12,34 @@ namespace ProEvents.API.Controllers
     [ApiController]
     [Route("[controller]")]
     public class EventController : ControllerBase
-    {
-        public IEnumerable<Event> _event = new Event[] {
-                new Event(){                   
-                    EventId = 1,
-                    Theme = "App1",
-                    Local = "Entroncamento",
-                    Batch = "1º D",
-                    NumPeople = 250,
-                    EventDate = DateTime.Now.AddDays(2).ToString("dd/MM/yyyy"),
-                    ImageUrl = "photo.png"
-                },
-                new Event(){                   
-                    EventId = 2,
-                    Theme = "App2",
-                    Local = "Entroncamento",
-                    Batch = "2º D",
-                    NumPeople = 350,
-                    EventDate = DateTime.Now.AddDays(2).ToString("dd/MM/yyyy"),
-                    ImageUrl = "photo.png"
-                }
-            };
+    {  
+        private readonly DataContext _context;
+        public EventController(DataContext context){
+            this._context = context;
+        }
 
         [HttpGet]
         public IEnumerable<Event> Get()
         {
-            return this._event;
+            return this._context.Events;
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<Event> GetById(int id)
+        public Event GetById(int id)
         {
-            return this._event.Where(x => x.EventId == id);
+            return this._context.Events.FirstOrDefault(x => x.EventId == id);
         }
 
         [HttpPost]
         public IEnumerable<Event> Post()
         {
-            return this._event;
+            return this._context.Events;
         }
 
         [HttpPut]
         public IEnumerable<Event> Put()
         {
-            return this._event;
+            return this._context.Events;
         }
     }
 }
