@@ -13,6 +13,8 @@ namespace ProEvents.API.Data
             
         }
 
+        //For Migrations
+        //dotnet ef migrations add [name of migration - ex: initialMigration]
         public DbSet<Event> Events { get; set; }
     }
 }
