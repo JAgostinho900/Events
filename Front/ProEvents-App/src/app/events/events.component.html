@@ -1,17 +1,23 @@
 <h2>Component Events</h2>
 <hr>
 
-<form action="" class="form-inline">
+<div class="form-inline">
   <div class="form-group mb-2">
-    <input type="text" class="form-control mr-2" placeholder="search">
+    <label class="mr-2">Filter:</label>
+    <input type="text" class="form-control mr-2" placeholder="search" [(ngModel)]="searchText">
     <button class="btn btn-outline-success">Search</button>
   </div>
-</form>
+</div>
+
+<!-- <h3 *ngIf="searchText">Filter:{{ searchText }}</h3> -->
+
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>
+      <th>
+        <button class="btn btn-light toggleImages" (click)="ToggleImages()">{{ showImages ? "Hide" : "Show" }}</button>
+      </th>
       <th>#</th>
-      <th>Image</th>
       <th>Theme</th>
       <th>Local</th>
       <th>Date</th>
@@ -20,18 +26,33 @@
       <th>Options</th>
     </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let event of events">
+  <tbody *ngIf="events && events.length > 0; else elseTemplate">
+    <tr *ngFor="let event of filteredEvents">
+      <td>
+        <img *ngIf="showImages" src="/assets/img/{{ event.imageUrl }}" [style.width.px]="widthImg">
+      </td>
       <td>{{ event.eventId }}</td>
-      <td>{{ event.imageUrl }}</td>
       <td>{{ event.theme }}</td>
       <td>{{ event.local }}</td>
       <td>{{ event.eventDate }}</td>
       <td>{{ event.numPeople }}</td>
       <td>{{ event.batch }}</td>
-      <td></td>
+      <td>
+        <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
+        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+      </td>
     </tr>
   </tbody>
+  <ng-template #elseTemplate>
+    <tfoot>
+      <tr>
+        <td colspan="8" class="text-center">
+          <h4>No Events found</h4>
+        </td>
+      </tr>
+    </tfoot>
+  </ng-template>
+
 </table>
 
 

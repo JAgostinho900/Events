@@ -490,3 +490,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# DB
+*.db
+*.db-shm
+*.db-wal

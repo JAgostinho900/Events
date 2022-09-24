@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { EventsComponent } from './events/events.component';
 import { SpeakersComponent } from './speakers/speakers.component';
 import { NavComponent } from './nav/nav.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NavComponent } from './nav/nav.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
