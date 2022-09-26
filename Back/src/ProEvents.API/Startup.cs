@@ -12,7 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ProEvents.API.Data;
+using ProEvents.Application;
+using ProEvents.Application.Contracts;
+using ProEvents.Persistence;
+using ProEvents.Persistence.Contexts;
 
 namespace ProEvents.API
 {
@@ -28,10 +31,20 @@ namespace ProEvents.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(
+            services.AddDbContext<ProEventContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
-            services.AddControllers();
+
+            //Handle loops created by referencing foreign keys
+            services.AddControllers().AddNewtonsoftJson(
+                x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+            //Add dependecy injection
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IGeneralPersist, GeneralPersistence>();
+            services.AddScoped<IEventPersist, EventPersistence>();
+
             services.AddCors();
             services.AddSwaggerGen(c =>
             {
